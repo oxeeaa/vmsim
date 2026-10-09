@@ -48,7 +48,7 @@ int vmem_execute(
         if (page->state == VMEM_PAGE_STATE_RESIDENT) {
             pout_result->hits++;
 
-            policy.on_hit();
+            policy.on_hit(mem, mem_size, NULL, NULL);
             continue;
         }
 
@@ -62,7 +62,7 @@ int vmem_execute(
             // Cold miss
             //
             pout_result->misses++;
-            policy.on_miss();
+            policy.on_miss(mem, mem_size, NULL, NULL);
         } else {
             //
             // Somebody needs to go
