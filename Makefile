@@ -23,7 +23,7 @@ test: $(TEST)
 run: $(MAIN)
 	./$(MAIN)
 
-$(MAIN): $(CODE)/main/Main.c $(INCLUDE)/Solution.c
+$(MAIN): $(CODE)/main/Main.c $(INCLUDE)/Simulator.c $(INCLUDE)/Algorithm.c $(INCLUDE)/PageTable.c
 	$(CC) $(CFLAGS) -I$(INCLUDE) $^ -o $@
 
 $(TEST): $(CODE)/tests/Main.c

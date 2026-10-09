@@ -29,11 +29,11 @@ void    array_delete(void* a);
 
 // Appends value pval to array a.
 // Returns pointer to reallocated memory if reallocation took place.
-void*   array_append(void* a, void* pval);
+void*   array_append(void* a, const void* restrict pval);
 
 // Pops an item pout from array a.
 // Might shrink the array (i have not decided yet) so it returns a pointer to the array.
-void*   array_pop(void* a, void** pout);
+void*   array_pop(void* a, void** restrict pout);
 
 
 #ifdef ARRAY_IMPLEMENTATION
@@ -71,7 +71,7 @@ void array_delete(void *a) {
 }
 
 
-void* array_append(void* a, void* pval) {
+void* array_append(void* a, const void* restrict pval) {
     if (!a) return NULL;
 
     array_t* head = ARRAY_HEAD(a);
@@ -92,7 +92,7 @@ void* array_append(void* a, void* pval) {
     return (void*)(head + 1);
 }
 
-void* array_pop(void* a, void** pout) {
+void* array_pop(void* a, void** restrict pout) {
     if (!a) return NULL;
 
     array_t* head = ARRAY_HEAD(a);

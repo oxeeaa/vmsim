@@ -4,6 +4,7 @@
 //
 
 
+#include "Simulator.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,8 +12,9 @@
 
 #define ARRAY_IMPLEMENTATION
 #include "Array.h"
-#include "Solution.h"
+#include "Simulator.h"
 #include "Trace.h"
+
 
 void print_usage(void) {
     printf(
@@ -20,7 +22,7 @@ void print_usage(void) {
         "\n"
         "options:\n"
         "  -a <algorithm>   Page replacement algorithm:\n"
-        "                   ideal, optimal, fifo, lru\n"
+        "                   ideal, optimal, fifo, lru, random\n"
         "  -n <frames>      Number of physical frames where n > 0\n"
         "  -f <file>        Path to trace file\n"
         "  --help           Show this help message\n"
@@ -92,17 +94,30 @@ int main(int argc, char** argv) {
     uint16_t* trace = NULL;
     if (trace_parse(f, &trace) != TRACE_OK) {
         printf("error: could not parse trace file\n\n");
+        fclose(f);
         return EXIT_FAILURE;
     }
 
     if (!trace) {
         printf("error: trace file is either empty or malformed\n\n");
+        fclose(f);
         return EXIT_FAILURE;
     }
 
-    for (size_t i = 0; i < ARRAY_SIZE(trace); ++i) {
-        printf("[%zu] 0x%04x\n", i, trace[i]);
-    }
 
-    return vmem_run(algo, nf, trace);
+    vmem_exec_result_t vmr;
+
+    int res = vmem_execute(algo, nf, trace, &vmr);
+
+    trace_free(trace);
+    
+    printf(
+        "Run result: \n"
+        "\tHits      %llu\n"
+        "\tMisses    %llu\n"
+        "\tEvictions %llu\n\n",
+        vmr.hits, vmr.misses, vmr.evictions
+    );
+
+    return res;
 }
