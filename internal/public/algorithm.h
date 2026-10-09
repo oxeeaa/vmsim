@@ -9,8 +9,6 @@
 
 #include <stdbool.h>
 
-#include "policy.h"
-
 
 typedef enum {
     VMEM_INVALID = 0,
@@ -18,6 +16,7 @@ typedef enum {
     VMEM_OPTIMAL,
     VMEM_LRU,
     VMEM_RANDOM,
+    VMEM_IDEAL,
 } vmem_algorithm_t;
 
 // typedef enum {
@@ -26,5 +25,3 @@ typedef enum {
 // Converts string to vmem_algorithm_t.
 vmem_algorithm_t vmem_stoalg(const char* s);
 
-// Gets corresponding policy descriptor for given algorithm.
-int vmem_get_policy_descriptor(vmem_algorithm_t al, vmem_policy_descriptor_t* pout_policy);

@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "algorithm.h"
 #include "frame.h"
 
 
@@ -34,3 +35,6 @@ typedef struct {
     );
 } vmem_policy_descriptor_t;
 
+// Gets corresponding policy descriptor for given algorithm.
+// Returns 0 on success, -1 for invalid algorithm, 1 for unimplemented algorithm.
+int vmem_get_policy_descriptor(vmem_algorithm_t al, vmem_policy_descriptor_t* pout_policy);

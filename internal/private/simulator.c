@@ -1,5 +1,7 @@
 
+#include <errno.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "simulator.h"
@@ -18,7 +20,15 @@ int vmem_execute(
     vmem_execute_result_t* restrict pout_result
 ) {
     vmem_policy_descriptor_t policy;
-    if (vmem_get_policy_descriptor(algorithm, &policy) != 0) {
+    int get_policy_res = 0;
+    if ((get_policy_res = vmem_get_policy_descriptor(algorithm, &policy)) != 0) {
+        perror("vmem_get_policy_descriptor");
+        if (get_policy_res == 1) {
+            errno = ENOSYS;
+        } else {
+            errno = EINVAL;
+        }
+
         return EXIT_FAILURE;
     }
     
@@ -77,4 +87,21 @@ int vmem_execute(
     free(mem);
 
     return EXIT_SUCCESS;
+}
+
+bool vmem_find_free_frame(
+    vmem_frame_t*  restrict memory, 
+    size_t                  memory_size,
+    vmem_frame_t** restrict poutframe,
+    size_t*        restrict poutppn
+) {
+    for (size_t i = 0; i < memory_size; ++i) {
+        if (!memory[i].is_occupied) {
+            *poutppn = i;
+            *poutframe = &memory[i];
+            return true;
+        }
+    }
+
+    return false;
 }

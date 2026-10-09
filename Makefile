@@ -24,7 +24,7 @@ test: $(TEST)
 run: $(MAIN)
 	./$(MAIN)
 
-$(MAIN): $(CODE)/vmsim/launch.c $(PRIVATE)/simulator.c $(PRIVATE)/algorithm.c
+$(MAIN): $(CODE)/vmsim/launch.c $(PRIVATE)/simulator.c $(PRIVATE)/algorithm.c $(PRIVATE)/policy.c $(PRIVATE)/policy_random.c
 	$(CC) $(CFLAGS) -I$(INCLUDE) $^ -o $@
 
 $(TEST): $(CODE)/tests/Main.c
