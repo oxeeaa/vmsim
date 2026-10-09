@@ -27,4 +27,4 @@ typedef enum {
 vmem_algorithm_t vmem_stoalg(const char* s);
 
 // Gets corresponding policy descriptor for given algorithm.
-vmem_policy_descriptor_t vmem_get_policy_descriptor(vmem_algorithm_t al);
+int vmem_get_policy_descriptor(vmem_algorithm_t al, vmem_policy_descriptor_t* pout_policy);

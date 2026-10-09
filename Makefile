@@ -7,7 +7,8 @@ CC      := gcc
 CFLAGS  := -Wall -Wextra -Wpedantic -std=c23 -pthread
 
 BUILD   := build
-INCLUDE := include
+INCLUDE := internal/public
+PRIVATE := internal/private
 CODE    := code
 
 MAIN    := $(BUILD)/vmsim
@@ -23,7 +24,7 @@ test: $(TEST)
 run: $(MAIN)
 	./$(MAIN)
 
-$(MAIN): $(CODE)/main/Main.c $(INCLUDE)/Simulator.c $(INCLUDE)/Algorithm.c $(INCLUDE)/PageTable.c
+$(MAIN): $(CODE)/vmsim/launch.c $(PRIVATE)/simulator.c $(PRIVATE)/algorithm.c
 	$(CC) $(CFLAGS) -I$(INCLUDE) $^ -o $@
 
 $(TEST): $(CODE)/tests/Main.c

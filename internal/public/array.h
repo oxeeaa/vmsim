@@ -7,7 +7,6 @@
 
 #pragma once
 
-
 #include <stddef.h>
 
 
@@ -44,9 +43,8 @@ void*   array_pop(void* a, void** pout);
 #include <stdlib.h>
 #include <string.h>
 
+#include "array.h"
 
-
-#include "Array.h"
 
 void* array_new(size_t capacity, size_t elem_size) {
     if (capacity == 0 || elem_size == 0)

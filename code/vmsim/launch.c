@@ -4,16 +4,17 @@
 //
 
 
-#include "Simulator.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
 
 #define ARRAY_IMPLEMENTATION
-#include "Array.h"
-#include "Simulator.h"
-#include "Trace.h"
+#include "array.h"
+#define TRACE_IMPLEMENTATION
+#include "trace.h"
+#include "simulator.h"
+#include "algorithm.h"
 
 
 void print_usage(void) {
@@ -44,15 +45,15 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    vmem_algorithm_t algo   = VMEM_NONE;
-    char* trace_file        = NULL;
-    uint64_t nf             = 0;
+    vmem_algorithm_t algo       = VMEM_INVALID;
+    char*            trace_file = NULL;
+    uint64_t         nf         = 0;
 
     int opt;
     while ((opt = getopt_long(argc, argv, "a:n:f:h", long_options, NULL)) != -1) {
         switch(opt) {
             case 'a':
-                algo = stvmemalg(optarg);
+                algo = vmem_stoalg(optarg);
             break;
             case 'n':
                 nf = atoi(optarg);
@@ -79,11 +80,12 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    if (algo == VMEM_NONE) {
+    if (algo == VMEM_INVALID) {
         printf("error: invalid algorithm\n\n");
         return EXIT_FAILURE;
     }
     
+
     FILE* f = fopen(trace_file, "rb");
     if (!f) {
         perror("fopen");
@@ -105,17 +107,16 @@ int main(int argc, char** argv) {
     }
 
 
-    vmem_exec_result_t vmr;
-
-    int res = vmem_execute(algo, nf, trace, &vmr);
+    vmem_execute_result_t vmr = { 0 };
+    int res = vmem_execute(trace, nf, algo, &vmr);
 
     trace_free(trace);
     
     printf(
-        "Run result: \n"
-        "\tHits      %llu\n"
-        "\tMisses    %llu\n"
-        "\tEvictions %llu\n\n",
+        "vmsim run result: \n"
+        "\thits      %lu\n"
+        "\tmisses    %lu\n"
+        "\tevictions %lu\n\n",
         vmr.hits, vmr.misses, vmr.evictions
     );
 

@@ -9,7 +9,10 @@
 
 #include <stdint.h>
 
+#include "frame.h"
+#include "memory.h"
 #include "page.h"
+#include "algorithm.h"
 
 
 typedef struct {
@@ -18,13 +21,19 @@ typedef struct {
              evictions;
 } vmem_execute_result_t;
 
-static vmem_page_t vmem_page_table[10];
+static vmem_page_t vmem_page_table[VMEM_VP_COUNT];
 
-int     vmem_execute(uint16_t* trace);
+
+int vmem_execute(
+    uint16_t*              restrict trace, 
+    size_t                          mem_size, 
+    vmem_algorithm_t                algorithm, 
+    vmem_execute_result_t* restrict pout_result
+);
 
 bool    vmem_find_free_frame(
-    // frame_t* memory, 
-    // size_t memory_size,
-    // frame_t** restrict poutframe,
-    // size_t *poutppn
+    vmem_frame_t*  restrict memory, 
+    size_t                  memory_size,
+    vmem_frame_t** restrict poutframe,
+    size_t*        restrict poutppn
 );

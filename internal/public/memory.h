@@ -11,4 +11,5 @@
 
 
 #define VMEM_VADDR_SPACE_SIZE UINT16_MAX
-#define VMEM_PAGE_SZ 256
+#define VMEM_PAGE_SZ          256
+#define VMEM_VP_COUNT         (VMEM_VADDR_SPACE_SIZE / VMEM_PAGE_SZ + 1)
