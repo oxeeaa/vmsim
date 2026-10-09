@@ -6,7 +6,12 @@
 #include "policy_random.h"
 
 
-bool vmem_policy_random_initialize(uint16_t* _) {
+bool vmem_policy_random_initialize(
+    uint16_t* restrict _, 
+    size_t mem_size,
+    void** restrict ctx
+) {
+
     srand((unsigned int)time(NULL));
 
     return true;
@@ -15,8 +20,7 @@ bool vmem_policy_random_initialize(uint16_t* _) {
 bool vmem_policy_random_on_hit(
     vmem_frame_t* restrict mem, 
     size_t mem_size, 
-    vmem_frame_t** restrict pout_frame, 
-    size_t* pout_ppn
+    void** restrict ctx
 ) {
     return true;
 }
@@ -24,8 +28,7 @@ bool vmem_policy_random_on_hit(
 bool vmem_policy_random_on_miss(
     vmem_frame_t* restrict mem, 
     size_t mem_size, 
-    vmem_frame_t** restrict pout_frame, 
-    size_t* pout_ppn
+    void** restrict ctx
 ) {
     return true;
 }
@@ -34,7 +37,8 @@ bool vmem_policy_random_select_victim(
     vmem_frame_t* restrict mem, 
     size_t mem_size, 
     vmem_frame_t** restrict pout_frame, 
-    size_t* pout_ppn
+    size_t* pout_ppn,
+    void** restrict ctx
 ) {
     if (
         mem == NULL || 
@@ -53,3 +57,5 @@ bool vmem_policy_random_select_victim(
 
     return true;
 }
+
+void vmem_policy_random_destroy(void** _) {}

@@ -20,6 +20,8 @@ int vmem_execute(
     vmem_execute_result_t* restrict pout_result
 ) {
     vmem_policy_descriptor_t policy;
+    void* policy_ctx = NULL;
+
     int get_policy_res = 0;
     if ((get_policy_res = vmem_get_policy_descriptor(algorithm, &policy)) != 0) {
         if (get_policy_res == 1) {
@@ -32,7 +34,7 @@ int vmem_execute(
         return EXIT_FAILURE;
     }
     
-    if (!policy.initialize(trace)) {
+    if (!policy.initialize(trace, mem_size, &policy_ctx)) {
         return EXIT_FAILURE;
     }
 
@@ -48,7 +50,7 @@ int vmem_execute(
         if (page->state == VMEM_PAGE_STATE_RESIDENT) {
             pout_result->hits++;
 
-            policy.on_hit(mem, mem_size, NULL, NULL);
+            policy.on_hit(mem, mem_size, &policy_ctx);
             continue;
         }
 
@@ -62,14 +64,14 @@ int vmem_execute(
             // Cold miss
             //
             pout_result->misses++;
-            policy.on_miss(mem, mem_size, NULL, NULL);
+            policy.on_miss(mem, mem_size, &policy_ctx);
         } else {
             //
             // Somebody needs to go
             //
             pout_result->evictions++;
             pout_result->misses++;
-            policy.select_victim(mem, mem_size, &frame, &ppn);
+            policy.select_victim(mem, mem_size, &frame, &ppn, &policy_ctx);
             //
             // Invalidate current vpn mapped to this victim frame
             //
@@ -84,6 +86,8 @@ int vmem_execute(
         page->ppn          = ppn;
     }
     
+    policy.destroy(policy_ctx);
+
     free(mem);
 
     return EXIT_SUCCESS;
