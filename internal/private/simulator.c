@@ -22,13 +22,13 @@ int vmem_execute(
     vmem_policy_descriptor_t policy;
     int get_policy_res = 0;
     if ((get_policy_res = vmem_get_policy_descriptor(algorithm, &policy)) != 0) {
-        perror("vmem_get_policy_descriptor");
         if (get_policy_res == 1) {
             errno = ENOSYS;
         } else {
             errno = EINVAL;
         }
 
+        perror("vmem_get_policy_descriptor");
         return EXIT_FAILURE;
     }
     

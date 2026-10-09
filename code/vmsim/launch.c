@@ -111,14 +111,15 @@ int main(int argc, char** argv) {
     int res = vmem_execute(trace, nf, algo, &vmr);
 
     trace_free(trace);
-    
-    printf(
-        "vmsim run result: \n"
-        "\thits      %lu\n"
-        "\tmisses    %lu\n"
-        "\tevictions %lu\n\n",
-        vmr.hits, vmr.misses, vmr.evictions
-    );
+
+    if (res == EXIT_SUCCESS)
+        printf(
+            "vmsim run result: \n"
+            "\thits      %lu\n"
+            "\tmisses    %lu\n"
+            "\tevictions %lu\n\n",
+            vmr.hits, vmr.misses, vmr.evictions
+        );
 
     return res;
 }
