@@ -83,7 +83,7 @@ int vmem_execute(vmem_algorithm_t al, uint64_t nf, uint16_t* ts, vmem_exec_resul
     //
     
     srand(time(NULL));
-
+    
     uint64_t hits = 0,
              misses = 0,
              evictions = 0;
@@ -129,6 +129,7 @@ int vmem_execute(vmem_algorithm_t al, uint64_t nf, uint16_t* ts, vmem_exec_resul
         case VMEM_RANDOM:
         case VMEM_NONE:
         default:
+        break;
     }
 
     for (size_t i = 0; i < ARRAY_SIZE(ts); ++i) {
