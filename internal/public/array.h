@@ -57,7 +57,7 @@ void* array_new(size_t capacity, size_t elem_size) {
         return NULL;
 
     a->elem_size = elem_size;
-    a->capacity = 12;
+    a->capacity = capacity;
     a->size = 0;
 
     

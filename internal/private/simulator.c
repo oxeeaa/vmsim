@@ -48,6 +48,8 @@ int vmem_execute(
         vmem_page_t*    page  = &vmem_page_table[vpn];
         
         if (page->state == VMEM_PAGE_STATE_RESIDENT) {
+            printf("hit addr:0x%04x, vpn: %zu\n", vaddr, vpn);
+
             pout_result->hits++;
 
             policy.on_hit(mem, mem_size, &policy_ctx);
@@ -59,12 +61,13 @@ int vmem_execute(
         //
         vmem_frame_t* frame;
         size_t        ppn;
-        if (vmem_find_free_frame(mem, mem_size, &frame, &ppn) == 0) {
+        if (vmem_find_free_frame(mem, mem_size, &frame, &ppn)) {
+            printf("cold miss addr:0x%04x, vpn: %zu\n", vaddr, vpn);
             //
             // Cold miss
             //
             pout_result->misses++;
-            policy.on_miss(mem, mem_size, &policy_ctx);
+            policy.on_miss(mem, mem_size, frame, ppn, &policy_ctx);
         } else {
             //
             // Somebody needs to go
@@ -72,10 +75,22 @@ int vmem_execute(
             pout_result->evictions++;
             pout_result->misses++;
             policy.select_victim(mem, mem_size, &frame, &ppn, &policy_ctx);
+
+            printf(
+                "eviction addr:0x%04x, vpn: %zu \t (evicts vpn %d in frame %zu)\n", 
+                vaddr,
+                vpn,
+                frame->vpn,
+                ppn
+            );
             //
             // Invalidate current vpn mapped to this victim frame
             //
             vmem_page_table[frame->vpn].state = VMEM_PAGE_STATE_INVALID;
+            //
+            // Run on miss logic after victim selected
+            //
+            policy.on_miss(mem, mem_size, frame, ppn, &policy_ctx);
         }
         //
         // Mark page resident and update frame vpn
@@ -86,7 +101,7 @@ int vmem_execute(
         page->ppn          = ppn;
     }
     
-    policy.destroy(policy_ctx);
+    policy.destroy(&policy_ctx);
 
     free(mem);
 

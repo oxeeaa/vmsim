@@ -33,10 +33,14 @@ typedef struct {
     // Params:
     //          - mem: physical memory
     //          - mem_size: physical memory size
+    //          - frame: loaded frame
+    //          - ppn: loaded ppn
     //          - ctx: policy context (if needed)
     bool(*on_miss)(
         vmem_frame_t* restrict  mem, 
-        size_t                  mem_size, 
+        size_t                  mem_size,
+        vmem_frame_t*           frame,
+        size_t                  ppn,
         void** restrict         ctx
     );
     // Selects a frame to be evicted.

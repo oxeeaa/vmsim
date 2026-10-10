@@ -27,7 +27,9 @@ bool vmem_policy_random_on_hit(
 
 bool vmem_policy_random_on_miss(
     vmem_frame_t* restrict mem, 
-    size_t mem_size, 
+    size_t                 mem_size, 
+    vmem_frame_t*          frame,
+    size_t                 ppn,
     void** restrict ctx
 );
 

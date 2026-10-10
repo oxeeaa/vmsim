@@ -13,6 +13,12 @@
 #include "frame.h"
 
 
+typedef struct {
+    uint64_t* last_used;
+    uint64_t  clock;
+} vmem_policy_fifo_context_t;
+
+
 bool vmem_policy_fifo_initialize(
     uint16_t* restrict trace,
     size_t mem_size,
@@ -27,7 +33,9 @@ bool vmem_policy_fifo_on_hit(
 
 bool vmem_policy_fifo_on_miss(
     vmem_frame_t* restrict mem, 
-    size_t mem_size, 
+    size_t                 mem_size,
+    vmem_frame_t*          frame,
+    size_t                 ppn,
     void** restrict ctx
 );
 
