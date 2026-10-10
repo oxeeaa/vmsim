@@ -11,6 +11,10 @@
 #include "page.h"
 #include "policy.h"
 #include "frame.h"
+#include "print.h"
+
+
+int vmem_gs_verbose_output = 0;
 
 
 int vmem_execute(
@@ -19,6 +23,7 @@ int vmem_execute(
     vmem_algorithm_t                algorithm, 
     vmem_execute_result_t* restrict pout_result
 ) {
+    FILE* print_stream = stdout;
     vmem_policy_descriptor_t policy;
     void* policy_ctx = NULL;
 
@@ -41,18 +46,25 @@ int vmem_execute(
     vmem_frame_t* mem = calloc(mem_size, sizeof(*mem));
     if (!mem) 
         return EXIT_FAILURE;
-    
+
+    if (vmem_gs_verbose_output) {
+        fprintf(print_stream, "\n VMSIM 1.67alpha nightly-build\n");
+        fprintf(print_stream, " running virtual memory simulation..\n\n");
+        vmem_print_header(print_stream);
+    }
+
     for (size_t i = 0; i < ARRAY_SIZE(trace); ++i) {
         uint16_t        vaddr = trace[i];
         size_t          vpn   = vaddr / VMEM_PAGE_SZ;
         vmem_page_t*    page  = &vmem_page_table[vpn];
         
         if (page->state == VMEM_PAGE_STATE_RESIDENT) {
-            printf("hit addr:0x%04x, vpn: %zu\n", vaddr, vpn);
+            if (vmem_gs_verbose_output)
+                vmem_print_row(print_stream, vaddr, vpn, "hit", NULL);
 
             pout_result->hits++;
 
-            policy.on_hit(mem, mem_size, &policy_ctx);
+            policy.on_hit(mem, mem_size, &mem[page->ppn], page->ppn, &policy_ctx);
             continue;
         }
 
@@ -62,7 +74,8 @@ int vmem_execute(
         vmem_frame_t* frame;
         size_t        ppn;
         if (vmem_find_free_frame(mem, mem_size, &frame, &ppn)) {
-            printf("cold miss addr:0x%04x, vpn: %zu\n", vaddr, vpn);
+            if (vmem_gs_verbose_output)
+                vmem_print_row(print_stream, vaddr, vpn, "miss", NULL);
             //
             // Cold miss
             //
@@ -76,13 +89,12 @@ int vmem_execute(
             pout_result->misses++;
             policy.select_victim(mem, mem_size, &frame, &ppn, &policy_ctx);
 
-            printf(
-                "eviction addr:0x%04x, vpn: %zu \t (evicts vpn %d in frame %zu)\n", 
-                vaddr,
-                vpn,
-                frame->vpn,
-                ppn
-            );
+            if (vmem_gs_verbose_output) {
+                char details[128];
+                snprintf(details, sizeof(details), "evicted vpn %u in frame %zu", frame->vpn, ppn);
+                vmem_print_row(print_stream, vaddr, vpn, "swap", details);
+            }
+
             //
             // Invalidate current vpn mapped to this victim frame
             //
@@ -101,6 +113,9 @@ int vmem_execute(
         page->ppn          = ppn;
     }
     
+    if (vmem_gs_verbose_output)
+        fprintf(print_stream, "\n");
+
     policy.destroy(&policy_ctx);
 
     free(mem);

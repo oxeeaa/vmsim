@@ -25,9 +25,10 @@ void print_usage(void) {
         "\n"
         "options:\n"
         "  -a <algorithm>   Page replacement algorithm:\n"
-        "                   ideal, optimal, fifo, lru, random\n"
+        "                   clock, optimal, fifo, lru, random\n"
         "  -n <frames>      Number of physical frames where n > 0\n"
         "  -f <file>        Path to trace file\n"
+        "  --verbose        Print detailed output for each address access\n"
         "  --help           Show this help message\n"
         "\n"
         "example:\n"
@@ -38,6 +39,7 @@ void print_usage(void) {
 
 static struct option long_options[] = {
     { "help", no_argument, 0, 'h' },
+    {  "verbose", no_argument, 0, 'v'},
     { 0, 0, 0, 0 }
 };
 
@@ -52,7 +54,7 @@ int main(int argc, char** argv) {
     uint64_t         nf         = 0;
 
     int opt;
-    while ((opt = getopt_long(argc, argv, "a:n:f:h", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "a:n:f:h:v", long_options, NULL)) != -1) {
         switch(opt) {
             case 'a':
                 algo = vmem_stoalg(optarg);
@@ -66,6 +68,9 @@ int main(int argc, char** argv) {
             case 'h':
                 print_usage();
             return EXIT_SUCCESS;
+            case 'v':
+                vmem_gs_verbose_output = 1;
+            break;
             default:
                 print_usage();
             return EXIT_FAILURE;

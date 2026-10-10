@@ -14,6 +14,10 @@
 #include "frame.h"
 
 
+#define VMEM_DEFINE_POLICY_CTX(name, type) type* name = (type*)(*ctx);
+#define VMEM_ASSERT_POLICY_CTX (ctx && *ctx)
+
+
 typedef struct {
     // Initializes policy defined by vmem_algorithm_t
     // Params:
@@ -24,10 +28,14 @@ typedef struct {
     // Params:
     //          - mem: physical memory
     //          - mem_size: physical memory size
+    //          - frame: loaded frame
+    //          - ppn: loaded ppn
     //          - ctx: policy context (if needed)
     bool(*on_hit)(
         vmem_frame_t* restrict  mem, 
-        size_t                  mem_size, 
+        size_t                  mem_size,
+        vmem_frame_t* restrict  frame,
+        size_t                  ppn,
         void** restrict         ctx
     );
     // Params:

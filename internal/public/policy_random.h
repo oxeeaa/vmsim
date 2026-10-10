@@ -22,6 +22,8 @@ bool vmem_policy_random_initialize(
 bool vmem_policy_random_on_hit(
     vmem_frame_t* restrict mem, 
     size_t mem_size, 
+    vmem_frame_t* restrict  frame,
+    size_t                  ppn,
     void** restrict ctx
 );
 

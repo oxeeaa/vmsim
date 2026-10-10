@@ -15,6 +15,9 @@
 #include "algorithm.h"
 
 
+int vmem_gs_verbose_output;
+
+
 typedef struct {
     uint64_t hits,
              misses,

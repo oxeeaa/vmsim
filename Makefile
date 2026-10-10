@@ -9,6 +9,7 @@ CFLAGS  := -Wall -Wextra -Wpedantic -std=c23 -pthread
 BUILD   := build
 INCLUDE := internal/public
 PRIVATE := internal/private
+PRIVATE_SRC := $(wildcard $(PRIVATE)/*.c)
 CODE    := code
 
 MAIN    := $(BUILD)/vmsim
@@ -24,7 +25,7 @@ test: $(TEST)
 run: $(MAIN)
 	./$(MAIN)
 
-$(MAIN): $(CODE)/vmsim/launch.c $(PRIVATE)/simulator.c $(PRIVATE)/algorithm.c $(PRIVATE)/policy.c $(PRIVATE)/policy_random.c $(PRIVATE)/policy_fifo.c
+$(MAIN): $(CODE)/vmsim/launch.c $(PRIVATE_SRC)
 	$(CC) $(CFLAGS) -I$(INCLUDE) $^ -o $@
 
 $(TEST): $(CODE)/tests/Main.c

@@ -28,12 +28,16 @@ bool vmem_policy_fifo_initialize(
 }
 bool vmem_policy_fifo_on_hit(
     vmem_frame_t* restrict mem, 
-    size_t mem_size, 
+    size_t mem_size,
+    vmem_frame_t* restrict  frame,
+    size_t                  ppn, 
     void** restrict ctx
 ) {
     (void)mem;
     (void)mem_size;
     (void)ctx;
+    (void)frame;
+    (void)ppn;
 
     return true;
 }
@@ -53,7 +57,7 @@ bool vmem_policy_fifo_on_miss(
     vmem_policy_fifo_context_t* c = (vmem_policy_fifo_context_t*)(*ctx);
 
     //
-    // Record when this frame was this frame received a page and bump the logical clock
+    // Record when this frame has received a page and bump the logical clock
     //
     c->last_used[ppn] = c->clock++;
 
