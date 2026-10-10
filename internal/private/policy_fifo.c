@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "policy_fifo.h"
+#include "policy.h"
 
 
 bool vmem_policy_fifo_initialize(
@@ -53,9 +54,8 @@ bool vmem_policy_fifo_on_miss(
     (void)mem_size;
     (void)frame;
 
-    if (!ctx || !*ctx) return false;
-    vmem_policy_fifo_context_t* c = (vmem_policy_fifo_context_t*)(*ctx);
-
+    if (!VMEM_ASSERT_POLICY_CTX) return false;
+    VMEM_DEFINE_POLICY_CTX(c, vmem_policy_fifo_context_t);
     //
     // Record when this frame has received a page and bump the logical clock
     //
@@ -71,9 +71,9 @@ bool vmem_policy_fifo_select_victim(
     size_t* pout_ppn,
     void** restrict ctx
 ) {
-    if (!ctx || !*ctx || !pout_frame || !pout_ppn)
+    if (!VMEM_ASSERT_POLICY_CTX || !pout_frame || !pout_ppn)
         return false;
-    vmem_policy_fifo_context_t* c = (vmem_policy_fifo_context_t*)(*ctx);
+    VMEM_DEFINE_POLICY_CTX(c, vmem_policy_fifo_context_t);
     
     size_t victim_ppn = 0;
     uint64_t oldest_time = c->last_used[0];
@@ -96,9 +96,8 @@ bool vmem_policy_fifo_select_victim(
 
 
 void vmem_policy_fifo_destroy(void** ctx) {
-    if (!ctx || !*ctx) return;
-
-    vmem_policy_fifo_context_t* c = (vmem_policy_fifo_context_t*)(*ctx);
+    if (!VMEM_ASSERT_POLICY_CTX) return;
+    VMEM_DEFINE_POLICY_CTX(c, vmem_policy_fifo_context_t);
 
     free(c->last_used);
     free(c);

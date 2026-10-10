@@ -99,12 +99,45 @@ bool vmem_policy_optimal_select_victim(
     // I check if RESIDENT
     //
     // if not resident? swap?
+    
+    size_t victim_ppn = 0;
+    size_t furthest_next_use = 0;
+    //
+    // Check all frames and scan forwards in the trace
+    //
+    for (size_t ppn = 0; ppn < mem_size; ++ppn) {
+        size_t frame_vpn = mem[ppn].vpn;
+        size_t next_use = SIZE_MAX;
 
-    for (size_t i = c->current_idx + 1; i < c->trace_size; ++i) {
-        for (size_t j = 0; j < mem_size; ++j) {
-            
+        //
+        // Scan forward starting from next access
+        //
+        for (size_t k = c->current_idx + 1; k < c->trace_size; ++k) {
+            if ((c->trace[k] / VMEM_PAGE_SZ) == frame_vpn) {
+                next_use = k;
+                break;
+            }
+        }
+
+        //
+        // If page is never used again; it is the ideal victim
+        //
+        if (next_use == SIZE_MAX) {
+            victim_ppn = ppn;
+            break;
+        }
+
+        //
+        // Track frame whose next use is furthest in the future
+        //
+        if (next_use > furthest_next_use) {
+            furthest_next_use = next_use;
+            victim_ppn = ppn;
         }
     }
+
+    *pout_ppn   = victim_ppn;
+    *pout_frame = &mem[victim_ppn];
 
     return true;
 }

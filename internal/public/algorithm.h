@@ -15,6 +15,8 @@ typedef enum {
     VMEM_FIFO,
     VMEM_OPTIMAL,
     VMEM_LRU,
+    VMEM_MRU,
+    VMEM_LFU,
     VMEM_RANDOM,
     VMEM_CLOCK,
 } vmem_algorithm_t;

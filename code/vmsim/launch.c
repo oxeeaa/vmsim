@@ -25,7 +25,7 @@ void print_usage(void) {
         "\n"
         "options:\n"
         "  -a <algorithm>   Page replacement algorithm:\n"
-        "                   clock, optimal, fifo, lru, random\n"
+        "                   clock, optimal, fifo, lru, mru, lfu, random\n"
         "  -n <frames>      Number of physical frames where n > 0\n"
         "  -f <file>        Path to trace file\n"
         "  --verbose        Print detailed output for each address access\n"

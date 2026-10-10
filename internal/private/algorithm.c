@@ -14,6 +14,9 @@ vmem_algorithm_t vmem_stoalg(const char* s) {
         return VMEM_LRU;
     else if (strcmp(s, "optimal") == 0)
         return VMEM_OPTIMAL;
-
+    else if (strcmp(s, "mru") == 0)
+        return VMEM_MRU;
+    else if (strcmp(s, "lfu") == 0)
+        return VMEM_LFU;
     return VMEM_INVALID;
 }
