@@ -25,5 +25,5 @@ void vmem_print_header(FILE* stream) {
         "addr", "vpn", "type", "details"
     );
     
-    fprintf(stream, "--------------------------------------------------\n");
+    fprintf(stream, "──────────────────────────────────────────────────\n");
 }

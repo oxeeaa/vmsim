@@ -15,7 +15,7 @@
 #include "algorithm.h"
 
 
-int vmem_gs_verbose_output;
+extern int vmem_gs_verbose_output;
 
 
 typedef struct {
