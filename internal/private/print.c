@@ -1,3 +1,10 @@
+//
+//
+//      print.c
+//      Alan Ksenzov 2026-10-11
+//
+//
+
 
 #include "print.h"
 #include <stdio.h>

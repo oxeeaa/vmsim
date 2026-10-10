@@ -1,5 +1,11 @@
+//
+//
+//      policy_lru.c
+//      Alan Ksenzov 2026-10-11
+//
+//
 
-#include <errno.h>
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,10 +15,12 @@
 
 
 bool vmem_policy_lru_initialize(
-    uint16_t* restrict _, 
+    uint16_t* restrict trace, 
     size_t mem_size,
     void** restrict ctx
 ) {
+    (void)trace;
+
     vmem_policy_lru_context_t* c = (vmem_policy_lru_context_t*)malloc(sizeof(*c));
     if (!c) return false;
 

@@ -1,3 +1,10 @@
+//
+//
+//      simulator.c
+//      Alan Ksenzov 2026-10-11
+//
+//
+
 
 #include <errno.h>
 #include <stdint.h>
@@ -15,7 +22,7 @@
 
 
 int vmem_gs_verbose_output = 0;
-
+vmem_page_t vmem_page_table[VMEM_VP_COUNT];
 
 int vmem_execute(
     uint16_t*              restrict trace, 

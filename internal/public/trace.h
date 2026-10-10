@@ -1,15 +1,11 @@
 //
+//
 //      trace.h
 //      Alan Ksenzov 2026-10-08
 //
+//
 
 #pragma once
-
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "array.h"
 
 
 typedef enum {
@@ -20,6 +16,11 @@ typedef enum {
 
 
 #ifdef TRACE_IMPLEMENTATION
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "array.h"
 
 trace_result_t trace_parse(FILE* f, uint16_t** pout) {
     uint16_t* trace = (uint16_t*)array_new(10, sizeof(uint16_t));

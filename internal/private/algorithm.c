@@ -1,3 +1,10 @@
+//
+//
+//      algorithm.c
+//      Alan Ksenzov 2026-10-11
+//
+//
+
 
 #include "algorithm.h"
 #include <string.h>

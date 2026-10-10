@@ -1,3 +1,10 @@
+//
+//
+//      policy_random.c
+//      Alan Ksenzov 2026-10-11
+//
+//
+
 
 #include <errno.h>
 #include <stdlib.h>
@@ -7,10 +14,11 @@
 
 
 bool vmem_policy_random_initialize(
-    uint16_t* restrict _, 
+    uint16_t* restrict trace, 
     size_t mem_size,
     void** restrict ctx
 ) {
+    (void)trace;
     (void)mem_size;
     (void)ctx;
 
@@ -57,8 +65,10 @@ bool vmem_policy_random_select_victim(
     size_t mem_size, 
     vmem_frame_t** restrict pout_frame, 
     size_t* pout_ppn,
-    void** restrict _
+    void** restrict ctx
 ) {
+    (void)ctx;
+
     if (
         mem == NULL || 
         mem_size == 0 ||
@@ -77,4 +87,6 @@ bool vmem_policy_random_select_victim(
     return true;
 }
 
-void vmem_policy_random_destroy(void** _) {}
+void vmem_policy_random_destroy(void** ctx) {
+    (void)ctx;
+}

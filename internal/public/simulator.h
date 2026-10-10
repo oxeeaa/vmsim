@@ -10,12 +10,12 @@
 #include <stdint.h>
 
 #include "frame.h"
-#include "memory.h"
 #include "page.h"
 #include "algorithm.h"
 
 
 extern int vmem_gs_verbose_output;
+extern vmem_page_t vmem_page_table[];
 
 
 typedef struct {
@@ -24,7 +24,6 @@ typedef struct {
              evictions;
 } vmem_execute_result_t;
 
-static vmem_page_t vmem_page_table[VMEM_VP_COUNT];
 
 
 int vmem_execute(

@@ -1,3 +1,10 @@
+//
+//
+//      policy_fifo.c
+//      Alan Ksenzov 2026-10-11
+//
+//
+
 
 
 #include <stdint.h>
@@ -8,10 +15,12 @@
 
 
 bool vmem_policy_fifo_initialize(
-    uint16_t* _,
+    uint16_t* trace,
     size_t mem_size,
     void** restrict ctx
 ) {
+    (void)trace;
+
     vmem_policy_fifo_context_t* c = (vmem_policy_fifo_context_t*)malloc(sizeof(*c));
     if (!c) return false;
 
