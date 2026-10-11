@@ -25,8 +25,8 @@ bool vmem_policy_clock_initialize(
     if (!c)
         return false;
 
-    c->ref_bits = calloc(mem_size, sizeof(*c->ref_bits));
-    if (!c->ref_bits) {
+    c->ref_bit = calloc(mem_size, sizeof(*c->ref_bit));
+    if (!c->ref_bit) {
         free(c);
         return false;
     }
@@ -55,7 +55,7 @@ bool vmem_policy_clock_on_hit(
     //
     // Give seconds chance; mark frame as recently referenced
     //
-    c->ref_bits[ppn] = true;
+    c->ref_bit[ppn] = true;
 
     return true;
 }
@@ -77,7 +77,7 @@ bool vmem_policy_clock_on_miss(
     //
     // Newly loaded frame starst with reference bit 0
     //
-    c->ref_bits[ppn] = false;
+    c->ref_bit[ppn] = false;
 
     return true;
 }
@@ -96,12 +96,12 @@ bool vmem_policy_clock_select_victim(
     //
     // Sweep clock hand untill I find a frame with reference 0
     //
-    while (c->ref_bits[c->hand]) {
+    while (c->ref_bit[c->hand]) {
         //
         // Clear reference bitt
-        c->ref_bits[c->hand] = false;
+        c->ref_bit[c->hand] = false;
         //
-        // Advance clock hand circularly (loop)
+        // Advance clock hand circularly
         c->hand = (c->hand + 1) % mem_size;
     }
 
@@ -125,6 +125,6 @@ void vmem_policy_clock_destroy(void** ctx) {
     if (!VMEM_ASSERT_POLICY_CTX) return;
     VMEM_DEFINE_POLICY_CTX(c, vmem_policy_clock_context_t);
 
-    free(c->ref_bits);
+    free(c->ref_bit);
     free(c);
 }

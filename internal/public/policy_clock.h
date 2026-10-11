@@ -15,7 +15,7 @@
 
 typedef struct {
     // Reference bit per physical frame
-    bool*  ref_bits;
+    bool*  ref_bit;
     // Clock hand sweeping from 0 to physical mem size - 1
     size_t hand;
 } vmem_policy_clock_context_t;

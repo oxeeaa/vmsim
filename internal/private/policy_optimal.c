@@ -98,15 +98,11 @@ bool vmem_policy_optimal_select_victim(
     
     if (!VMEM_ASSERT_POLICY_CTX) return false;
     VMEM_DEFINE_POLICY_CTX(c, vmem_policy_optimal_context_t);
-    // [current_trace_idx] [future]
-    // i need to predict the future
-    //
     
-    // I look at memory acceses that will happen in future
-    // I check if RESIDENT
     //
-    // if not resident? swap?
-    
+    // Find a frame that will not be used for the longest time
+    //
+
     size_t victim_ppn = 0;
     size_t furthest_next_use = 0;
     //
