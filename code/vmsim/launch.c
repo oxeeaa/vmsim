@@ -142,6 +142,7 @@ int main(int argc, char** argv) {
             "   - algortihm       %s\n"
             "   - frames          %llu\n"
             "   - traces          %zu\n"
+            "  ───────────────────────\n"
             "   - hits            %llu\n"
             "   - misses          %llu\n"
             "   - swaps           %llu\n\n",
