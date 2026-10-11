@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <time.h>
 
 #define ARRAY_IMPLEMENTATION
 #include "array.h"
@@ -113,19 +114,34 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
+    
+    // reminder to self
+    // tv_sec = seconds 
+    // tv_nsec = nanoseconds
+    // { 2, 250000000 } = 2.250000000s
+    struct timespec start;
+    struct timespec end;
+
+    timespec_get(&start, TIME_UTC);
 
     vmem_execute_result_t vmr = { 0 };
     int res = vmem_execute(trace, nf, algo, &vmr);
+    
+    timespec_get(&end, TIME_UTC);
+
+    double elapsed_ms = 
+        (double)(end.tv_sec - start.tv_sec) * 1000.0 +
+        (double)(end.tv_nsec - start.tv_nsec) / 1000000.0;
 
     trace_free(trace);
 
     if (res == EXIT_SUCCESS)
         printf(
-            "vmsim run result: \n"
-            "\thits      %lu\n"
-            "\tmisses    %lu\n"
-            "\tevictions %lu\n\n",
-            vmr.hits, vmr.misses, vmr.evictions
+            " finished in %.6fms and generated:\n"
+            "   - hits      %llu\n"
+            "   - misses    %llu\n"
+            "   - evictions %llu\n\n",
+            elapsed_ms, vmr.hits, vmr.misses, vmr.evictions
         );
 
     return res;
