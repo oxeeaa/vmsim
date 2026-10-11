@@ -27,3 +27,18 @@ vmem_algorithm_t vmem_stoalg(const char* s) {
         return VMEM_LFU;
     return VMEM_INVALID;
 }
+
+const char* vmem_atoa(vmem_algorithm_t al) {
+    switch (al) {
+        case VMEM_OPTIMAL:  return "OPTIMAL";
+        case VMEM_RANDOM:   return "RANDOM";
+        case VMEM_FIFO:     return "FIFO";
+        case VMEM_LRU:      return "LRU";
+        case VMEM_LFU:      return "LFU";
+        case VMEM_MRU:      return "MRU";
+        case VMEM_CLOCK:    return "CLOCK";
+        case VMEM_INVALID:
+        default:
+            return "INVALID";
+    }
+}

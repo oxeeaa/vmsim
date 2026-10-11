@@ -113,7 +113,8 @@ int main(int argc, char** argv) {
         fclose(f);
         return EXIT_FAILURE;
     }
-
+    
+    fclose(f);
     
     // reminder to self
     // tv_sec = seconds 
@@ -133,16 +134,22 @@ int main(int argc, char** argv) {
         (double)(end.tv_sec - start.tv_sec) * 1000.0 +
         (double)(end.tv_nsec - start.tv_nsec) / 1000000.0;
 
-    trace_free(trace);
 
     if (res == EXIT_SUCCESS)
         printf(
-            " finished in %.6fms and generated:\n"
-            "   - hits      %llu\n"
-            "   - misses    %llu\n"
-            "   - evictions %llu\n\n",
-            elapsed_ms, vmr.hits, vmr.misses, vmr.evictions
+            " finished in %.6fms \n"
+            " summary:\n"
+            "   - algortihm       %s\n"
+            "   - frames          %llu\n"
+            "   - traces          %zu\n"
+            "   - hits            %llu\n"
+            "   - misses          %llu\n"
+            "   - swaps           %llu\n\n",
+            elapsed_ms,
+            vmem_atoa(algo), nf, ARRAY_SIZE(trace), vmr.hits, vmr.misses, vmr.evictions
         );
+
+    trace_free(trace);
 
     return res;
 }

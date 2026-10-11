@@ -12,6 +12,7 @@
 #include <time.h>
 
 #include "policy_lru.h"
+#include "policy.h"
 
 
 bool vmem_policy_lru_initialize(
@@ -51,9 +52,8 @@ bool vmem_policy_lru_on_hit(
     (void)mem_size;
     (void)frame;
     
-    if (!ctx || !*ctx) return false;
-
-    vmem_policy_lru_context_t* c = (vmem_policy_lru_context_t*)(*ctx);
+    if (!VMEM_ASSERT_POLICY_CTX) return false;
+    VMEM_DEFINE_POLICY_CTX(c, vmem_policy_lru_context_t);
     
     c->last_used[ppn] = c->clock++;
 
@@ -74,9 +74,8 @@ bool vmem_policy_lru_on_miss(
     (void)mem_size;
     (void)frame;
     
-    if (!ctx || !*ctx) return false;
-
-    vmem_policy_lru_context_t* c = (vmem_policy_lru_context_t*)(*ctx);
+    if (!VMEM_ASSERT_POLICY_CTX) return false;
+    VMEM_DEFINE_POLICY_CTX(c, vmem_policy_lru_context_t);
     
     c->last_used[ppn] = c->clock++;
 
@@ -93,10 +92,8 @@ bool vmem_policy_lru_select_victim(
     //
     // Evict least recently used page (lowest clock)
     //
-    if (!ctx ||!*ctx || !pout_frame || !pout_ppn)
-        return false;
-
-    vmem_policy_lru_context_t* c = (vmem_policy_lru_context_t*)(*ctx);
+    if (!VMEM_ASSERT_POLICY_CTX || !pout_frame || !pout_ppn) return false;
+    VMEM_DEFINE_POLICY_CTX(c, vmem_policy_lru_context_t);
 
     size_t victim_ppn = 0;
     uint64_t oldest_time = c->last_used[0];

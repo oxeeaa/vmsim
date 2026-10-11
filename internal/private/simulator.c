@@ -51,8 +51,10 @@ int vmem_execute(
     }
 
     vmem_frame_t* mem = calloc(mem_size, sizeof(*mem));
-    if (!mem) 
+    if (!mem) {
+        policy.destroy(&policy_ctx);
         return EXIT_FAILURE;
+    }
 
     if (vmem_gs_verbose_output) {
         fprintf(print_stream, "\n VMSIM 1.67alpha nightly-build\n");
