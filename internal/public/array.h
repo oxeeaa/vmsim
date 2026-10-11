@@ -106,6 +106,8 @@ void* array_pop(void* a, void** restrict pout) {
     char* buffer = a;
     char* src = buffer + head->size * head->elem_size;
     memcpy(*pout, src, head->elem_size);
+    
+    head->size--;
 
     return a;
 }
