@@ -33,7 +33,7 @@ int vmem_execute(
     vmem_execute_result_t* restrict pout_result
 );
 
-bool    vmem_find_free_frame(
+bool vmem_find_free_frame(
     vmem_frame_t*  restrict memory, 
     size_t                  memory_size,
     vmem_frame_t** restrict poutframe,
