@@ -19,4 +19,5 @@ typedef enum {
 typedef struct {
     size_t            ppn;
     vmem_page_state_t state;
+    bool              has_been_seen;
 } vmem_page_t;

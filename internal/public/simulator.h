@@ -21,7 +21,8 @@ extern vmem_page_t vmem_page_table[];
 typedef struct {
     uint64_t hits,
              misses,
-             evictions;
+             evictions,
+             vpn_count;
 } vmem_execute_result_t;
 
 

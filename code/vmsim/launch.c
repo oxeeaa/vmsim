@@ -142,12 +142,19 @@ int main(int argc, char** argv) {
             "   - algortihm       %s\n"
             "   - frames          %llu\n"
             "   - traces          %zu\n"
+            "   - vpns            %llu\n"
             "  ───────────────────────\n"
             "   - hits            %llu\n"
             "   - misses          %llu\n"
             "   - swaps           %llu\n\n",
             elapsed_ms,
-            vmem_atoa(algo), nf, ARRAY_SIZE(trace), vmr.hits, vmr.misses, vmr.evictions
+            vmem_atoa(algo),
+            nf,
+            ARRAY_SIZE(trace),
+            vmr.vpn_count,
+            vmr.hits,
+            vmr.misses,
+            vmr.evictions
         );
 
     trace_free(trace);

@@ -61,12 +61,22 @@ int vmem_execute(
         fprintf(print_stream, " running virtual memory simulation..\n\n");
         vmem_print_header(print_stream);
     }
+    
+    pout_result->vpn_count = 0;
 
     for (size_t i = 0; i < ARRAY_SIZE(trace); ++i) {
         uint16_t        vaddr = trace[i];
         size_t          vpn   = vaddr / VMEM_PAGE_SZ;
         vmem_page_t*    page  = &vmem_page_table[vpn];
         
+        //
+        // Record all unique vpns for output
+        //
+        if (!page->has_been_seen) {
+            page->has_been_seen = true;
+            pout_result->vpn_count++;
+        }
+
         if (page->state == VMEM_PAGE_STATE_RESIDENT) {
             if (vmem_gs_verbose_output)
                 vmem_print_row(print_stream, vaddr, vpn, "hit", NULL);
