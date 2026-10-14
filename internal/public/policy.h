@@ -18,13 +18,16 @@
 #define VMEM_ASSERT_POLICY_CTX (ctx && *ctx)
 
 
+// Describes policy virtual table.
 typedef struct {
-    // Initializes policy defined by vmem_algorithm_t
+    // Initializes policy defined by vmem_algorithm_t.
     // Params:
     //          - trace: trace array
     //          - mem_size: size of memory
     //          - ctx: policy context (if any)
     bool(*initialize)(uint16_t* restrict trace, size_t mem_size, void** restrict ctx);
+    
+    // Called on page hit.
     // Params:
     //          - mem: physical memory
     //          - mem_size: physical memory size
@@ -32,12 +35,14 @@ typedef struct {
     //          - ppn: loaded ppn
     //          - ctx: policy context (if needed)
     bool(*on_hit)(
-        vmem_frame_t* restrict  mem, 
-        size_t                  mem_size,
-        vmem_frame_t* restrict  frame,
-        size_t                  ppn,
-        void** restrict         ctx
+        vmem_frame_t* restrict mem, 
+        size_t                 mem_size,
+        vmem_frame_t* restrict frame,
+        size_t                 ppn,
+        void**        restrict ctx
     );
+    
+    // Called on page miss.
     // Params:
     //          - mem: physical memory
     //          - mem_size: physical memory size
@@ -45,12 +50,14 @@ typedef struct {
     //          - ppn: loaded ppn
     //          - ctx: policy context (if needed)
     bool(*on_miss)(
-        vmem_frame_t* restrict  mem, 
-        size_t                  mem_size,
-        vmem_frame_t*           frame,
-        size_t                  ppn,
-        void** restrict         ctx
+        vmem_frame_t* restrict mem, 
+        size_t                 mem_size,
+        vmem_frame_t* restrict frame,
+        size_t                 ppn,
+        void**        restrict ctx
     );
+
+    // Called on page miss when swap needed.
     // Selects a frame to be evicted.
     // Params:
     //          - mem: physical memory
@@ -59,13 +66,14 @@ typedef struct {
     //          - pout_ppn: physical page number of the victim frame.
     //          - ctx: policy context (if needed)
     bool(*select_victim)(
-        vmem_frame_t* restrict  mem, 
+        vmem_frame_t*  restrict mem, 
         size_t                  mem_size, 
         vmem_frame_t** restrict pout_frame, 
-        size_t* restrict        pout_ppn,
-        void** restrict         ctx
+        size_t*        restrict pout_ppn,
+        void**         restrict ctx
     );
-    // Destroy the policy context if there is any
+
+    // Destroy the policy context if there is any.
     // Params:
     //          - ctx: policy context (if any)
     void(*destroy)(void** ctx);

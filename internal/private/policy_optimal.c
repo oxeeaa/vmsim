@@ -19,8 +19,8 @@
 
 bool vmem_policy_optimal_initialize(
     uint16_t* restrict trace,
-    size_t mem_size,
-    void** restrict ctx
+    size_t             mem_size,
+    void**    restrict ctx
 ) {
     (void)mem_size;
     
@@ -39,10 +39,10 @@ bool vmem_policy_optimal_initialize(
 
 bool vmem_policy_optimal_on_hit(
     vmem_frame_t* restrict mem, 
-    size_t mem_size,
-    vmem_frame_t* restrict  frame,
-    size_t                  ppn, 
-    void** restrict ctx
+    size_t                 mem_size,
+    vmem_frame_t* restrict frame,
+    size_t                 ppn, 
+    void**        restrict ctx
 ) {
     //
     // Advance the timeline
@@ -63,9 +63,9 @@ bool vmem_policy_optimal_on_hit(
 bool vmem_policy_optimal_on_miss(
     vmem_frame_t* restrict mem, 
     size_t                 mem_size, 
-    vmem_frame_t*          frame,
+    vmem_frame_t* restrict frame,
     size_t                 ppn,
-    void** restrict ctx
+    void**        restrict ctx
 ) {
     //
     // Advance the timeline
@@ -84,11 +84,11 @@ bool vmem_policy_optimal_on_miss(
 }
 
 bool vmem_policy_optimal_select_victim(
-    vmem_frame_t* restrict mem, 
-    size_t mem_size, 
+    vmem_frame_t*  restrict mem, 
+    size_t                  mem_size, 
     vmem_frame_t** restrict pout_frame, 
-    size_t* pout_ppn,
-    void** restrict ctx
+    size_t*        restrict pout_ppn,
+    void**         restrict ctx
 ) {
     (void)mem;
     (void)mem_size;

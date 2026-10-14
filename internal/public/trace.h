@@ -8,8 +8,10 @@
 #pragma once
 
 
+#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stddef.h>
+
 
 typedef enum {
     TRACE_EEMPTY,
@@ -18,15 +20,14 @@ typedef enum {
 } trace_result_t;
 
 
-
-trace_result_t trace_parse(FILE* f, uint16_t** pout);
+trace_result_t trace_parse(FILE* restrict f, uint16_t** restrict pout);
 
 
 #ifdef TRACE_IMPLEMENTATION
 
 #include "array.h"
 
-trace_result_t trace_parse(FILE* f, uint16_t** pout) {
+trace_result_t trace_parse(FILE* restrict f, uint16_t** restrict pout) {
     uint16_t* trace = (uint16_t*)array_new(10, sizeof(uint16_t));
     if (!trace) {
         return TRACE_ENOMEM;

@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     while ((opt = getopt_long(argc, argv, "a:n:f:h:v", long_options, NULL)) != -1) {
         switch(opt) {
             case 'a':
-                algo = vmem_stoalg(optarg);
+                algo = vmem_stoa(optarg);
             break;
             case 'n':
                 nf = atoi(optarg);

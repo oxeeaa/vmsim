@@ -15,32 +15,32 @@
 
 bool vmem_policy_random_initialize(
     uint16_t* restrict trace,
-    size_t mem_size,
-    void** restrict ctx
+    size_t             mem_size,
+    void**    restrict ctx
 );
 
 bool vmem_policy_random_on_hit(
     vmem_frame_t* restrict mem, 
-    size_t mem_size, 
-    vmem_frame_t* restrict  frame,
-    size_t                  ppn,
-    void** restrict ctx
+    size_t                 mem_size, 
+    vmem_frame_t* restrict frame,
+    size_t                 ppn,
+    void**        restrict ctx
 );
 
 bool vmem_policy_random_on_miss(
     vmem_frame_t* restrict mem, 
     size_t                 mem_size, 
-    vmem_frame_t*          frame,
+    vmem_frame_t* restrict frame,
     size_t                 ppn,
-    void** restrict ctx
+    void**        restrict ctx
 );
 
 bool vmem_policy_random_select_victim(
-    vmem_frame_t* restrict mem, 
-    size_t mem_size, 
+    vmem_frame_t*  restrict mem, 
+    size_t                  mem_size, 
     vmem_frame_t** restrict pout_frame, 
-    size_t* pout_ppn,
-    void** restrict ctx
+    size_t*        restrict pout_ppn,
+    void**         restrict ctx
 );
 
 void vmem_policy_random_destroy(void** ctx);

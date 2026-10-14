@@ -25,7 +25,7 @@ typedef enum {
 // } vmem_algorithm_context_t;
 
 // Converts string to vmem_algorithm_t.
-vmem_algorithm_t vmem_stoalg(const char* s);
+vmem_algorithm_t vmem_stoa(const char* s);
 
 // Converts algorithm to string.
 const char* vmem_atoa(vmem_algorithm_t al);

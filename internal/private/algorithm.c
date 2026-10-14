@@ -10,7 +10,7 @@
 #include <string.h>
 
 
-vmem_algorithm_t vmem_stoalg(const char* s) {
+vmem_algorithm_t vmem_stoa(const char* s) {
     if (strcmp(s, "random") == 0) {
         return VMEM_RANDOM;
     } else if (strcmp(s, "clock") == 0)
