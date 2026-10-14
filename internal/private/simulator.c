@@ -30,9 +30,9 @@ int vmem_execute(
     vmem_algorithm_t                algorithm, 
     vmem_execute_result_t* restrict pout_result
 ) {
-    FILE* print_stream = stdout;
+    FILE*                    print_stream = stdout;
     vmem_policy_descriptor_t policy;
-    void* policy_ctx = NULL;
+    void*                    policy_ctx = NULL;
 
     int get_policy_res = 0;
     if ((get_policy_res = vmem_get_policy_descriptor(algorithm, &policy)) != 0) {
